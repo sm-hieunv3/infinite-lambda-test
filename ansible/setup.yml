@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  become: true
+
+  tasks:
+    - name: Install Docker
+      package:
+        name: docker
+        state: present
+
+    - name: Install git
+      package:
+        name: git
+        state: present
+
+    - name: Install java
+      package:
+        name: java-1.8.0-openjdk.x86_64
+        state: present
+
+    - name: Linux/Unix | Check if Terraform is present with the right version
+      command: "ls /usr/bin/terraform"
+      register: terraform_is_installed
+      ignore_errors: yes
+
+    - name:  Install Terraform
+      unarchive:
+        src: "https://releases.hashicorp.com/terraform/1.0.2/terraform_1.0.2_linux_amd64.zip"
+        dest: "/usr/bin"
+        remote_src: yes
+      when: terraform_is_installed is failed
+
+    - name: setup jenkins
+      include_role:
+        name: geerlingguy.jenkins
+      vars:
+        jenkins_plugins:
+          - blueocean
+
+    - name: Add the user 'jenkins' to docker
+      user:
+        name: jenkins
+        groups: docker,jenkins
+
+    - name: restart jenkins
+      systemd:
+        state: restarted
+        name: jenkins
