@@ -1,8 +1,7 @@
 pipeline {
     agent any
     parameters {
-        string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
-        string(name: 'GIT_URL', defaultValue: 'https://github.com/sm-hieunv3/lambda-test.git', description: 'clone url')
+        string(name: 'GIT_URL', defaultValue: 'https://github.com/sm-hieunv3/infinite-lambda-test.git', description: 'clone url')
     }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('admin_access_key')
@@ -16,7 +15,7 @@ pipeline {
         bucket_web = 'nguyenhieu8790-web'
     }
     stages {
-        stage('clone GIT repository') {
+        stage('clone given GIT repository') {
             steps {
                 script {
                     checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: "${GIT_URL}"]]])
