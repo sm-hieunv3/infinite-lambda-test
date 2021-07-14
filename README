@@ -1,7 +1,7 @@
 ToDo.
-1. Create ec2-instance then use ansible to setup jenkins
+1. Create ec2-instance then use ansible-playbook to setup jenkins
 
-2. Create a pipeline from SCM url: https://github.com/sm-hieunv3/lambda-test.git
+2. Create a pipeline from SCM url: https://github.com/sm-hieunv3/infinite-lambda-test.git
 
 3. Create aws account with permission of creating ec2, ecr,s3,vpc,iam. Using access + secrets to continue step4
 
